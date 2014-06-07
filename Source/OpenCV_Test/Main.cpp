@@ -56,7 +56,9 @@ int main(void)
 	cv::TermCriteria opt_flow_term_crit = 
 		cv::TermCriteria((cv::TermCriteria::COUNT)+(cv::TermCriteria::EPS), 20, 0.5);
 	cv::Size opt_flow_win_size = cv::Size(20,20);
-	int flag = 0;															//optional: CV_LKFLOW_INITIAL_GUESSES or CV_LKFLOW_GET_MIN_EIGENVALS
+	int flag = 0;
+
+	//optional: CV_LKFLOW_INITIAL_GUESSES or CV_LKFLOW_GET_MIN_EIGENVALS
 	int max_level_optical_flow = 10;
 	double min_eig_threshhold_optical_flow = 0.01;
 
