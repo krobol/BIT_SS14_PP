@@ -15,16 +15,20 @@ class PlayerControls : public QWidget
 public:
     explicit PlayerControls(QWidget *parent = 0);
 
+    bool playSequence() { return playerState; }
+
+public slots:
+    void setState(bool playing);
+
 signals:
     void play();
     void pause();
     void next();
     void previous();
 
-public slots:
-    void playClicked();
-
 private:
+    bool playerState;
+
     QAbstractButton *playButton;
     QAbstractButton *nextButton;
     QAbstractButton *previousButton;

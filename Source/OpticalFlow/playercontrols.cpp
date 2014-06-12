@@ -11,11 +11,11 @@ PlayerControls::PlayerControls(QWidget *parent) :
   , playButton(0)
   , nextButton(0)
   , previousButton(0)
+  , playerState(false)
 {
     playButton = new QToolButton(this);
     playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-
-    connect(playButton, SIGNAL(clicked()), this, SLOT(playClicked()));
+    connect(playButton, SIGNAL(clicked()), this, SIGNAL(play()));
 
     nextButton = new QToolButton(this);
     nextButton->setIcon(style()->standardIcon(QStyle::SP_MediaSeekForward));
@@ -35,8 +35,17 @@ PlayerControls::PlayerControls(QWidget *parent) :
     setLayout(layout);
 }
 
-void PlayerControls::playClicked()
+void PlayerControls::setState(bool playing)
 {
-
-
+    if (playing)
+    {
+        playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+        connect(playButton, SIGNAL(clicked()), this, SIGNAL(pause()));
+    }
+    else
+    {
+        playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        connect(playButton, SIGNAL(clicked()), this, SIGNAL(play()));
+    }
+    playerState = playing;
 }
