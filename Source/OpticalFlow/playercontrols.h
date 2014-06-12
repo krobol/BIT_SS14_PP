@@ -1,0 +1,33 @@
+#ifndef PLAYERCONTROLS_H
+#define PLAYERCONTROLS_H
+
+#include <QWidget>
+
+QT_BEGIN_NAMESPACE
+class QAbstractButton;
+class QAbstractSlider;
+class QComboBox;
+QT_END_NAMESPACE
+
+class PlayerControls : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit PlayerControls(QWidget *parent = 0);
+
+signals:
+    void play();
+    void pause();
+    void next();
+    void previous();
+
+public slots:
+    void playClicked();
+
+private:
+    QAbstractButton *playButton;
+    QAbstractButton *nextButton;
+    QAbstractButton *previousButton;
+};
+
+#endif // PLAYERCONTROLS_H

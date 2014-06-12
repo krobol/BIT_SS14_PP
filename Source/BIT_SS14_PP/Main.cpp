@@ -12,5 +12,6 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
+	std::cout << "Running Program..." << std::endl;
     return a.exec();
 }
