@@ -11,6 +11,7 @@ TARGET = OpticalFlow
 TEMPLATE = app
 
 INCLUDEPATH += "../../Dependencies/OpenCV/include/"
+LIBS += -L"../../Dependencies/OpenCV/bin/"
 
 build_pass:CONFIG(debug, debug|release){
     OBJECTS_DIR = build/debug
@@ -31,12 +32,6 @@ build_pass:CONFIG(debug, debug|release){
     -lopencv_ts249d\
     -lopencv_video249d\
     -lopencv_videostab249d\
-    -llibpngd\
-    -llibtiffd\
-    -lzlibd\
-    -lIlmImfd\
-    -llibjasperd\
-    -llibjpegd
 } else{
     OBJECTS_DIR = build/release
     LIBS += "../../Dependencies/OpenCV/lib/" \ \
