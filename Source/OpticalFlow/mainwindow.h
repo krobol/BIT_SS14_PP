@@ -19,6 +19,7 @@ class QPushButton;
 QT_END_NAMESPACE
 
 class PlayerControls;
+class ConfigDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -45,6 +46,7 @@ public slots:
 private:
     void LoadSequence(QString fileName);
     void resizeEvent(QResizeEvent *event);
+    void setAlgorithm(const QString& text);
 
     void createActions();
     void createMenus();
@@ -58,6 +60,7 @@ private:
     QAction *exitAct;
 
     QMenu *fileMenu;
+    ConfigDialog *configDialog;
 
     // Slider
     QSlider *slider;
@@ -79,6 +82,7 @@ private:
 
     QImage      displayImage;
     QString     fileName;
+    QTimer      *timer;
 
     // OpenCV Image and Sequence
     cv::VideoCapture m_sequence;
@@ -87,6 +91,7 @@ private:
 
     std::map<std::string, IOpticalFlowAlgorithm*> AlgorithmMap;
     IOpticalFlowAlgorithm* m_currentAlgorithm;
+    float fps;
 };
 
 #endif // MAINWINDOW_H

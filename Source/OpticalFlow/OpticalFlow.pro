@@ -67,6 +67,7 @@ SOURCES +=  main.cpp\
 
 HEADERS  += mainwindow.h \
             playercontrols.h \
-    iopticalflowalgorithm.h \
-    opticalflowhornschunck.h \
-    configdialog.h
+            iopticalflowalgorithm.h \
+            opticalflowhornschunck.h \
+            configdialog.h \
+            AlgorithmConfig.h

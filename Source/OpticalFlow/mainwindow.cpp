@@ -3,6 +3,7 @@
 #include <QtWidgets>
 
 #include "playercontrols.h"
+#include "configdialog.h"
 
 #include "opencv/cv.h"
 #include "opencv2/highgui/highgui.hpp"
@@ -30,14 +31,13 @@ cv::Mat QImage2Mat(QImage const& src)
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     current_frame_number(0),
-    m_currentAlgorithm(nullptr)
+    m_currentAlgorithm(nullptr),
+    fps(1)
 {
     QWidget* widget = new QWidget();
 
     createActions();
     createMenus();
-
-    setWindowTitle(tr("Optical Flow Viewer"));
 
     imageLabel = new QLabel(this);
     imageLabel->setBackgroundRole(QPalette::Dark);
@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(openButton, SIGNAL(clicked()), this, SLOT(open()));
 
     optionsButton = new QPushButton(tr("Options"), this);
+    optionsButton->setEnabled(false);
     connect(optionsButton, SIGNAL(clicked()), this, SLOT(options()));
 
     controls = new PlayerControls(this);
@@ -65,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(controls, SIGNAL(reset()),      this,   SLOT(resetClicked()));
 
     AlgorithmComboBox = new QComboBox();
-    connect(AlgorithmComboBox, SIGNAL(currentIndexChanged()), this, SLOT(algorithmChanged(QString)));
+    connect(AlgorithmComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(algorithmChanged(QString)));
 
     slider = new QSlider(Qt::Horizontal, this);
     slider->setRange(0, 0);
@@ -98,12 +99,13 @@ MainWindow::MainWindow(QWidget *parent) :
     layout->addLayout(controlLayout);
     widget->setLayout(layout);
 
-    QTimer *timer = new QTimer(this);
-    timer->setInterval(100);
+    timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
-    timer->start();
 
+    configDialog = new ConfigDialog();
     setCentralWidget(widget);
+
+    setWindowTitle(tr("Optical Flow Viewer"));
 }
 
 MainWindow::~MainWindow()
@@ -124,6 +126,7 @@ void MainWindow::addAlgorithm(IOpticalFlowAlgorithm* algo)
     if(m_currentAlgorithm == nullptr)
     {
         m_currentAlgorithm = algo;
+        setAlgorithm(m_currentAlgorithm->getName());
     }
 }
 
@@ -139,7 +142,9 @@ void MainWindow::open()
 
 void MainWindow::options()
 {
-
+    configDialog->show();
+    configDialog->raise();
+    configDialog->activateWindow();
 }
 
 void MainWindow::playClicked()
@@ -171,6 +176,7 @@ void MainWindow::resetClicked()
 void MainWindow::seek(int frame)
 {
     m_sequence.set(CV_CAP_PROP_POS_FRAMES, (double)frame);
+    nextImage();
 }
 
 void MainWindow::tick()
@@ -181,9 +187,22 @@ void MainWindow::tick()
 
 void MainWindow::algorithmChanged(const QString& text)
 {
-    if(AlgorithmMap.find(text.toStdString().c_str()) != AlgorithmMap.end())
+    setAlgorithm(text);
+}
+
+void MainWindow::setAlgorithm(const QString& text)
+{
+    if(!text.isEmpty())
     {
-        m_currentAlgorithm = AlgorithmMap[text.toStdString().c_str()];
+        if(AlgorithmMap.find(text.toStdString().c_str()) != AlgorithmMap.end())
+        {
+            m_currentAlgorithm = AlgorithmMap[text.toStdString().c_str()];
+            if(m_currentAlgorithm != nullptr)
+            {
+                configDialog->changeAlgorithm(m_currentAlgorithm->getConfig());
+                optionsButton->setEnabled(true);
+            }
+        }
     }
 }
 
@@ -199,6 +218,16 @@ void MainWindow::LoadSequence(QString fileName)
 
     controls->setState(false);
     slider->setValue(0);
+    fps = m_sequence.get(CV_CAP_PROP_FPS);
+    if(fps <= 1)
+    {
+        fps = 10;
+    }
+    setWindowTitle(tr("Optical Flow Viewer [FPS: ")+QString::number(fps)+tr("]"));
+
+    timer->setInterval(1000.0/fps);
+    timer->start();
+
     slider->setRange(0, (int)m_sequence.get(CV_CAP_PROP_FRAME_COUNT));
     nextImage();
     adjustImage();
@@ -239,7 +268,7 @@ void MainWindow::nextImage()
             }
             m_current_image = next_image;
 
-            //ToDo: Draw Arrows here
+            // Draw Arrows here
             if(m_currentAlgorithm != nullptr)
             {
                 m_current_image = m_currentAlgorithm->drawArrows(last_image, m_current_image);
