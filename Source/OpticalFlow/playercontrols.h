@@ -25,6 +25,7 @@ signals:
     void pause();
     void next();
     void previous();
+    void reset();
 
 private:
     bool playerState;
@@ -32,6 +33,7 @@ private:
     QAbstractButton *playButton;
     QAbstractButton *nextButton;
     QAbstractButton *previousButton;
+    QAbstractButton *resetButton;
 };
 
 #endif // PLAYERCONTROLS_H

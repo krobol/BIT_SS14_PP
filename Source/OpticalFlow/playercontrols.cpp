@@ -24,11 +24,15 @@ PlayerControls::PlayerControls(QWidget *parent) :
 
     previousButton = new QToolButton(this);
     previousButton->setIcon(style()->standardIcon(QStyle::SP_MediaSeekBackward));
-
     connect(previousButton, SIGNAL(clicked()), this, SIGNAL(previous()));
+
+    resetButton = new QToolButton(this);
+    resetButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
+    connect(resetButton, SIGNAL(clicked()), this, SIGNAL(reset()));
 
     QBoxLayout *layout = new QHBoxLayout;
     layout->setMargin(0);
+    layout->addWidget(resetButton);
     layout->addWidget(previousButton);
     layout->addWidget(playButton);
     layout->addWidget(nextButton);

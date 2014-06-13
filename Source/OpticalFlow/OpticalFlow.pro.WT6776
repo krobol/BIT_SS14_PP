@@ -61,12 +61,11 @@ build_pass:CONFIG(debug, debug|release){
 
 SOURCES +=  main.cpp\
             mainwindow.cpp \
+            sequencewidget.cpp \
             playercontrols.cpp \
-    opticalflowhornschunck.cpp \
-    configdialog.cpp
+    iopticalflowalgorithm.cpp
 
 HEADERS  += mainwindow.h \
+            sequencewidget.h \
             playercontrols.h \
-    iopticalflowalgorithm.h \
-    opticalflowhornschunck.h \
-    configdialog.h
+    iopticalflowalgorithm.h
