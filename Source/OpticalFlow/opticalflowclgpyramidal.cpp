@@ -27,7 +27,7 @@ OpticalFlowClgPyramidal::OpticalFlowClgPyramidal()
     config.addParameter("w", ConfigValueDescription("SOR Relaxation", 2, 0, 2)); // Beschreibung der Option festlegen
     config.setValue("w", 1.0f);
 
-    config.addParameter("nScales", ConfigValueDescription("Number of Scales", 0, 1, 6)); // Beschreibung der Option festlegen
+    config.addParameter("nScales", ConfigValueDescription("Number of Levels", 0, 1, 6)); // Beschreibung der Option festlegen
     config.setValue("nScales", 4.0f);
 
     config.addParameter("scaleFactor", ConfigValueDescription("Downsampling factor", 2, 0.5f, 1.0f)); // Beschreibung der Option festlegen

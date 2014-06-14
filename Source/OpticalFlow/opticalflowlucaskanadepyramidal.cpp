@@ -12,7 +12,7 @@
 OpticalFlowLucasKanadePyramidal::OpticalFlowLucasKanadePyramidal()
 {
     // Define Options
-    config.addParameter("quadOptWinSize", ConfigValueDescription("Kernelsize", 0, 1, 40)); // Beschreibung der Option festlegen
+    config.addParameter("quadOptWinSize", ConfigValueDescription("Kernel size", 0, 1, 40)); // Beschreibung der Option festlegen
     config.setValue("quadOptWinSize", 10);
 
     config.addParameter("level", ConfigValueDescription("Number of Levels", 0, 1, 8)); // Beschreibung der Option festlegen
