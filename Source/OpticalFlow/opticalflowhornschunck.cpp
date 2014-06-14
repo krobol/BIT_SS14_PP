@@ -1,5 +1,6 @@
 #include "opticalflowhornschunck.h"
 
+#include "opencv/cv.h"
 #include "opencv/highgui.h"
 
 #include "opencv2/core/core.hpp"
@@ -8,16 +9,13 @@
 #include <stdio.h>
 #include <math.h>
 
-// Desired number of features to trac by the optical flow algorithm.
-#define FEATURE_NUM 200
-
 OpticalFlowHornSchunck::OpticalFlowHornSchunck()
 {
     // Define Options
-    config.addParameter("Iterations", ConfigValueDescription("Iterations", 0, 0, 10)); // Beschreibung der Option festlegen
+    config.addParameter("Iterations", ConfigValueDescription("Iteraasftions", 0, 0, 10)); // Beschreibung der Option festlegen
     config.setValue("Iterations", 2);   // Default wert einstellen
 
-    config.addParameter("Alpha", ConfigValueDescription("Alpha", 2, 0, 10)); // Beschreibung der Option festlegen
+    config.addParameter("Alpha", ConfigValueDescription("Alsdafpha", 2, 0, 10)); // Beschreibung der Option festlegen
     config.setValue("Alpha", 5.0f);
 }
 
@@ -91,7 +89,7 @@ cv::Mat OpticalFlowHornSchunck::drawArrows(const cv::Mat& lastImage, const cv::M
         for (int i = 0; i < pic2.cols; i++)
         {
             if((i*pic2.cols + j) % 100 == 0 && cv::Point(result[0].at<float>(j,i),result[1].at<float>(j,i) ) != cv::Point(0,0))
-                drawArrow(pic3, cv::Point(i,j),cv::Point(i,j) + cv::Point(result[0].at<float>(j,i),result[1].at<float>(j,i)), cv::Scalar(0,0,255));
+                drawArrow(pic3, cv::Point(i,j),cv::Point(i,j) + cv::Point(result[0].at<float>(j,i),result[1].at<float>(j,i)));
         }
     }
     return pic3;

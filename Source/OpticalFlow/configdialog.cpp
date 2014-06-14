@@ -24,7 +24,7 @@ void ConfigDialog::changeAlgorithm(AlgorithmConfig* config)
             QLabel *iterationsCountLabel = new QLabel(tr(QString::number((*it).second->min).toStdString().c_str()));
 
             iterationsSlider->setRange((*it).second->min*(std::pow(10, (*it).second->precision)), (*it).second->max*(std::pow(10, (*it).second->precision)));
-            iterationsSlider->OnSliderCange(iterationsCountLabel, (*it).second->name, config);
+            iterationsSlider->OnSliderCange(iterationsCountLabel, (*it).first, config);
 
             connect(iterationsSlider, SIGNAL(sliderMoved(int)), iterationsSlider, SLOT(changeLabel(int)));
             connect(iterationsSlider, SIGNAL(valueChanged(int)), iterationsSlider, SLOT(changeConfig(int)));
@@ -32,7 +32,7 @@ void ConfigDialog::changeAlgorithm(AlgorithmConfig* config)
             iterationsSlider->setSliderDown(true);
             iterationsSlider->setTracking(true);
 
-            iterationsSlider->setSliderPosition(config->getValue((*it).second->name) * (std::pow(10, (*it).second->precision)));
+            iterationsSlider->setSliderPosition(config->getValue((*it).first) * (std::pow(10, (*it).second->precision)));
 
             QHBoxLayout *iterationsLayout = new QHBoxLayout;
             iterationsLayout->addWidget(iterationsLabel);

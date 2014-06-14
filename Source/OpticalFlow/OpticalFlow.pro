@@ -58,7 +58,10 @@ SOURCES +=  main.cpp\
             playercontrols.cpp \
     opticalflowhornschunck.cpp \
     configdialog.cpp \
-    opticalflowclg.cpp
+    opticalflowclg.cpp \
+    opticalflowlucaskanade.cpp \
+    opticalflowclgpyramidal.cpp \
+    opticalflowlucaskanadepyramidal.cpp
 
 HEADERS  += mainwindow.h \
             playercontrols.h \
@@ -66,4 +69,7 @@ HEADERS  += mainwindow.h \
             opticalflowhornschunck.h \
             configdialog.h \
             AlgorithmConfig.h \
-    opticalflowclg.h
+    opticalflowclg.h \
+    opticalflowlucaskanade.h \
+    opticalflowclgpyramidal.h \
+    opticalflowlucaskanadepyramidal.h
