@@ -105,12 +105,16 @@ void ComputeUV(std::vector<cv::Mat>& vec_uv,
         for (int j = 0; j < derivative_f_x.rows; j++)
         {
             float denominator_uv = sum_fx_squared_sum_fy_squared.at<float>(j,i) - sum_fx_fy_squared.at<float>(j,i);
-
-            float u_tmp = ((-sum_fy_squared.at<float>(j,i)*sum_fx_ft.at<float>(j,i))+(sum_fx_fy.at<float>(j,i)*sum_fy_ft.at<float>(j,i)))/denominator_uv;
-            float v_tmp = ((sum_fx_ft.at<float>(j,i)*sum_fx_fy.at<float>(j,i))-(sum_fx_squared.at<float>(j,i)*sum_fy_ft.at<float>(j,i)))/denominator_uv;
-
-            u.at<float>(j,i) = u_tmp;
-            v.at<float>(j,i) = v_tmp;
+            if(denominator_uv != 0)
+            {
+                u.at<float>(j,i) = ((-sum_fy_squared.at<float>(j,i)*sum_fx_ft.at<float>(j,i))+(sum_fx_fy.at<float>(j,i)*sum_fy_ft.at<float>(j,i)))/denominator_uv;
+                v.at<float>(j,i) = ((sum_fx_ft.at<float>(j,i)*sum_fx_fy.at<float>(j,i))-(sum_fx_squared.at<float>(j,i)*sum_fy_ft.at<float>(j,i)))/denominator_uv;
+            }
+            else
+            {
+                u.at<float>(j,i) = 0;
+                v.at<float>(j,i) = 0;
+            }
         }
     }
 

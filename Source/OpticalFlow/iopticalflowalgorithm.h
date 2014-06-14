@@ -40,7 +40,7 @@ protected:
 
 typedef std::shared_ptr<IOpticalFlowAlgorithm> OpticalFlowAlgorithmPtr;
 
-inline void drawArrow(cv::Mat image, cv::Point2f p, cv::Point2f q, cv::Scalar color = cv::Scalar(255,255,255), int arrowMagnitude = 2, int thickness=1, int line_type=8, int shift=0)
+inline void drawArrow(cv::Mat image, cv::Point2f p, cv::Point2f q, cv::Scalar color = cv::Scalar(255,255,255), int arrowMagnitude = 3, int thickness=1, int line_type=8, int shift=0)
 {
     //Draw the principle line
     cv::line(image, p, q, color, thickness, line_type, shift);
