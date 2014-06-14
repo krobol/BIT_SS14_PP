@@ -34,7 +34,7 @@ build_pass:CONFIG(debug, debug|release){
     -lopencv_videostab249d\
 } else{
     OBJECTS_DIR = build/release
-    LIBS += "../../Dependencies/OpenCV/lib/" \ \
+    LIBS += -L"../../Dependencies/OpenCV/lib/" \
     -lopencv_contrib249\
     -lopencv_core249\
     -lopencv_features2d249\
@@ -50,24 +50,20 @@ build_pass:CONFIG(debug, debug|release){
     -lopencv_stitching249\
     -lopencv_ts249\
     -lopencv_video249\
-    -lopencv_videostab249\
-    -llibpng\
-    -llibtiff\
-    -lzlib\
-    -lIlmImf\
-    -llibjasper\
-    -llibjpeg
+    -lopencv_videostab249
 }
 
 SOURCES +=  main.cpp\
             mainwindow.cpp \
             playercontrols.cpp \
     opticalflowhornschunck.cpp \
-    configdialog.cpp
+    configdialog.cpp \
+    opticalflowclg.cpp
 
 HEADERS  += mainwindow.h \
             playercontrols.h \
             iopticalflowalgorithm.h \
             opticalflowhornschunck.h \
             configdialog.h \
-            AlgorithmConfig.h
+            AlgorithmConfig.h \
+    opticalflowclg.h

@@ -7,7 +7,6 @@
 ConfigDialog::ConfigDialog(QWidget *parent) :
     QDialog(parent)
 {
-
     setWindowTitle(tr("Config Dialog"));
 }
 
@@ -16,7 +15,6 @@ void ConfigDialog::changeAlgorithm(AlgorithmConfig* config)
     if(config != nullptr)
     {
         QGroupBox *configGroup = new QGroupBox(tr("Algorithm configuration"));
-
         QVBoxLayout *configLayout = new QVBoxLayout;
 
         for(auto it = config->getConfigDescriptionMap().begin(); it != config->getConfigDescriptionMap().end(); it++)
@@ -27,10 +25,14 @@ void ConfigDialog::changeAlgorithm(AlgorithmConfig* config)
 
             iterationsSlider->setRange((*it).second->min*(std::pow(10, (*it).second->precision)), (*it).second->max*(std::pow(10, (*it).second->precision)));
             iterationsSlider->OnSliderCange(iterationsCountLabel, (*it).second->name, config);
+
             connect(iterationsSlider, SIGNAL(sliderMoved(int)), iterationsSlider, SLOT(changeLabel(int)));
             connect(iterationsSlider, SIGNAL(valueChanged(int)), iterationsSlider, SLOT(changeConfig(int)));
+
             iterationsSlider->setSliderDown(true);
             iterationsSlider->setTracking(true);
+
+            iterationsSlider->setSliderPosition(config->getValue((*it).second->name) * (std::pow(10, (*it).second->precision)));
 
             QHBoxLayout *iterationsLayout = new QHBoxLayout;
             iterationsLayout->addWidget(iterationsLabel);
@@ -47,9 +49,4 @@ void ConfigDialog::changeAlgorithm(AlgorithmConfig* config)
         mainLayout->addStretch(1);
         setLayout(mainLayout);
     }
-}
-
-void ConfigDialog::chagedSlider(int slider, int value)
-{
-    //iterationsCountLabel->setText(QString::number(value).toStdString().c_str());
 }

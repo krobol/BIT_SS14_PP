@@ -2,6 +2,7 @@
 #include <QApplication>
 
 #include "opticalflowhornschunck.h"
+#include "opticalflowclg.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,7 +10,8 @@ int main(int argc, char *argv[])
     MainWindow w;
 
     // Adding Algorithm
-    w.addAlgorithm(new OpticalFlowHornSchunck());
+    w.addAlgorithm(OpticalFlowAlgorithmPtr(new OpticalFlowCLG()));
+    w.addAlgorithm(OpticalFlowAlgorithmPtr(new OpticalFlowHornSchunck()));
 
     w.show();
 

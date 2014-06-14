@@ -2,6 +2,8 @@
 #define ALGORITHMCONFIG_H
 
 #include <iostream>
+#include <map>
+#include <memory>
 
 struct ConfigValueDescription
 {
@@ -18,6 +20,7 @@ struct ConfigValueDescription
     int min;            // Wie hoch darf der Wert minimal sein
     int max;            // Wie hoch darf der Wert maximal sein
 };
+typedef std::shared_ptr<ConfigValueDescription> ConfigValueDescriptionPtr;
 
 class AlgorithmConfig
 {
@@ -26,15 +29,12 @@ public:
     {
         if(DescriptionMap.find(param) == DescriptionMap.end())
         {
-            DescriptionMap.insert(std::pair<std::string, ConfigValueDescription*>(param, new ConfigValueDescription(description)));
+            DescriptionMap.insert(std::pair<std::string, ConfigValueDescriptionPtr>(param, ConfigValueDescriptionPtr(new ConfigValueDescription(description))));
             ValueMap.insert(std::pair<std::string, float>(param, 0.0f));
         }
         else
         {
-            ConfigValueDescription* desc = DescriptionMap[param];
-            delete desc;
-
-            DescriptionMap[param] = new ConfigValueDescription(description);
+            DescriptionMap[param] = ConfigValueDescriptionPtr(new ConfigValueDescription(description));
         }
     }
 
@@ -63,13 +63,13 @@ public:
         }
     }
 
-    const std::map<std::string, ConfigValueDescription*>& getConfigDescriptionMap() const
+    const std::map<std::string, ConfigValueDescriptionPtr>& getConfigDescriptionMap() const
     {
         return DescriptionMap;
     }
 
 private:
-    std::map<std::string, ConfigValueDescription*> DescriptionMap;
+    std::map<std::string, ConfigValueDescriptionPtr> DescriptionMap;
     std::map<std::string, float> ValueMap;
 };
 

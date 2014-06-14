@@ -4,6 +4,8 @@
 #include <QMainWindow>
 
 #include "iopticalflowalgorithm.h"
+
+#include "opencv/cv.h"
 #include "opencv2/highgui/highgui.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -28,7 +30,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void addAlgorithm(IOpticalFlowAlgorithm* algo);
+    void addAlgorithm(OpticalFlowAlgorithmPtr algo);
 
 public slots:
     void open();
@@ -89,8 +91,8 @@ private:
     cv::Mat m_current_image;
     double current_frame_number;
 
-    std::map<std::string, IOpticalFlowAlgorithm*> AlgorithmMap;
-    IOpticalFlowAlgorithm* m_currentAlgorithm;
+    std::map<std::string, OpticalFlowAlgorithmPtr> AlgorithmMap;
+    OpticalFlowAlgorithmPtr m_currentAlgorithm;
     float fps;
 };
 

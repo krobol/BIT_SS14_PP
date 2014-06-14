@@ -5,8 +5,6 @@
 #include "playercontrols.h"
 #include "configdialog.h"
 
-#include "opencv/cv.h"
-#include "opencv2/highgui/highgui.hpp"
 
 #include <iostream>
 
@@ -102,7 +100,6 @@ MainWindow::MainWindow(QWidget *parent) :
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
 
-    configDialog = new ConfigDialog();
     setCentralWidget(widget);
 
     setWindowTitle(tr("Optical Flow Viewer"));
@@ -112,11 +109,11 @@ MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::addAlgorithm(IOpticalFlowAlgorithm* algo)
+void MainWindow::addAlgorithm(OpticalFlowAlgorithmPtr algo)
 {
     if(AlgorithmMap.find(algo->getName()) == AlgorithmMap.end())
     {
-        AlgorithmMap.insert(std::pair<char*, IOpticalFlowAlgorithm*>(algo->getName(), algo));
+        AlgorithmMap.insert(std::pair<char*, OpticalFlowAlgorithmPtr>(algo->getName(), algo));
         AlgorithmComboBox->addItem(algo->getName());
     }
     else
@@ -132,6 +129,7 @@ void MainWindow::addAlgorithm(IOpticalFlowAlgorithm* algo)
 
 void MainWindow::open()
 {
+    controls->setState(false);
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath());
 
     if (!fileName.isEmpty())
@@ -142,9 +140,12 @@ void MainWindow::open()
 
 void MainWindow::options()
 {
-    configDialog->show();
-    configDialog->raise();
-    configDialog->activateWindow();
+    if(configDialog != nullptr)
+    {
+        configDialog->show();
+        configDialog->raise();
+        configDialog->activateWindow();
+    }
 }
 
 void MainWindow::playClicked()
@@ -199,6 +200,7 @@ void MainWindow::setAlgorithm(const QString& text)
             m_currentAlgorithm = AlgorithmMap[text.toStdString().c_str()];
             if(m_currentAlgorithm != nullptr)
             {
+                configDialog = new ConfigDialog();
                 configDialog->changeAlgorithm(m_currentAlgorithm->getConfig());
                 optionsButton->setEnabled(true);
             }
@@ -208,6 +210,12 @@ void MainWindow::setAlgorithm(const QString& text)
 
 void MainWindow::LoadSequence(QString fileName)
 {
+    if (m_sequence.isOpened())
+    {
+        m_sequence.release();
+        m_current_image = cv::Mat();
+    }
+
     // Initializing the image sequence.
     m_sequence.open(fileName.toStdString().c_str());
     if (!m_sequence.isOpened())
@@ -250,31 +258,36 @@ void MainWindow::nextImage()
 {
     if (m_sequence.isOpened())
     {
-        cv::Mat next_image;
+        cv::Mat temp_next;
 
         current_frame_number = m_sequence.get(CV_CAP_PROP_POS_FRAMES);
         labelDuration->setText(QString::number(current_frame_number));
 
         // Getting current image.
-        m_sequence >> next_image;
+        m_sequence >> temp_next;
 
         // Assuming that image sequence is at its end, if an empty image occurs.
-        if(!next_image.empty())
+        if(!temp_next.empty())
         {
             cv::Mat last_image;
             if(!m_current_image.empty())
             {
                 last_image = m_current_image;
             }
-            m_current_image = next_image;
+            m_current_image = temp_next;
 
             // Draw Arrows here
-            if(m_currentAlgorithm != nullptr)
+            cv::Mat arrow_image;
+            if(m_currentAlgorithm != nullptr && !last_image.empty() && !m_current_image.empty())
             {
-                m_current_image = m_currentAlgorithm->drawArrows(last_image, m_current_image);
+                arrow_image = m_currentAlgorithm->drawArrows(last_image, m_current_image);
+            }
+            else
+            {
+                arrow_image = m_current_image;
             }
 
-            displayImage = Mat2QImage(m_current_image);
+            displayImage = Mat2QImage(arrow_image);
             adjustImage();
         }
         else
