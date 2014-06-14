@@ -7,7 +7,7 @@
 
 struct ConfigValueDescription
 {
-    ConfigValueDescription(std::string _name, int _precision = 0, int _min = 1, int _max = 10) :
+    ConfigValueDescription(std::string _name, int _precision = 0, float _min = 1, float _max = 10) :
         name(_name),
         precision(_precision),
         min(_min),
@@ -17,8 +17,8 @@ struct ConfigValueDescription
 
     std::string name;   // Name der angezeigt wird
     int precision;      // Wie viele kommastellen hat der Wert
-    int min;            // Wie hoch darf der Wert minimal sein
-    int max;            // Wie hoch darf der Wert maximal sein
+    float min;            // Wie hoch darf der Wert minimal sein
+    float max;            // Wie hoch darf der Wert maximal sein
 };
 typedef std::shared_ptr<ConfigValueDescription> ConfigValueDescriptionPtr;
 

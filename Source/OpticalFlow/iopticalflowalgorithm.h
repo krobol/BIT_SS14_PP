@@ -21,14 +21,16 @@ namespace cv
 class IOpticalFlowAlgorithm
 {
 public:
-    IOpticalFlowAlgorithm() : config()
-    {}
-    virtual ~IOpticalFlowAlgorithm(){};
+    IOpticalFlowAlgorithm() : config() {}
+    virtual ~IOpticalFlowAlgorithm(){}
 
+    // name of Algorithm for GUI
     virtual char* getName() = 0;
+
+    // actual algorithm
     virtual cv::Mat drawArrows(const cv::Mat& lastImage, const cv::Mat& currentImage) = 0;
 
-
+    // Config Struct
     AlgorithmConfig* getConfig()
     {
         return &config;
@@ -40,6 +42,7 @@ protected:
 
 typedef std::shared_ptr<IOpticalFlowAlgorithm> OpticalFlowAlgorithmPtr;
 
+// Helper to draw arrows into image
 inline void drawArrow(cv::Mat image, cv::Point2f p, cv::Point2f q, cv::Scalar color = cv::Scalar(255,255,255), int arrowMagnitude = 3, int thickness=1, int line_type=8, int shift=0)
 {
     //Draw the principle line

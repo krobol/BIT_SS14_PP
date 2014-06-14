@@ -30,7 +30,20 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     current_frame_number(0),
     m_currentAlgorithm(nullptr),
-    fps(1)
+    fps(1),
+    openAct(nullptr),
+    exitAct(nullptr),
+    fileMenu(nullptr),
+    configDialog(nullptr),
+    slider(nullptr),
+    labelDuration(nullptr),
+    openButton(nullptr),
+    optionsButton(nullptr),
+    controls(nullptr),
+    AlgorithmComboBox(nullptr),
+    imageFrame(nullptr),
+    imageLabel(nullptr),
+    timer(nullptr)
 {
     QWidget* widget = new QWidget();
 
@@ -200,9 +213,19 @@ void MainWindow::setAlgorithm(const QString& text)
             m_currentAlgorithm = AlgorithmMap[text.toStdString().c_str()];
             if(m_currentAlgorithm != nullptr)
             {
-                configDialog = new ConfigDialog();
-                configDialog->changeAlgorithm(m_currentAlgorithm->getConfig());
+                bool openNew = false;
+                if(configDialog != nullptr)
+                {
+                    if(configDialog->isVisible())
+                    {
+                        configDialog->close();
+                        openNew = true;
+                    }
+                }
+                configDialog = new ConfigDialog(this, m_currentAlgorithm->getConfig());
                 optionsButton->setEnabled(true);
+                if(openNew)
+                    configDialog->show();
             }
         }
     }

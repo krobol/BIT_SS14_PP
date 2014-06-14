@@ -12,7 +12,7 @@
 OpticalFlowClgPyramidal::OpticalFlowClgPyramidal()
 {
     // Define Options
-    config.addParameter("iterations", ConfigValueDescription("Iterations", 0, 0, 10)); // Beschreibung der Option festlegen
+    config.addParameter("iterations", ConfigValueDescription("Iterations", 0, 1, 10)); // Beschreibung der Option festlegen
     config.setValue("iterations", 1);   // Default wert einstellen
 
     config.addParameter("alpha", ConfigValueDescription("Global Smoothing", 2, 0.1f, 10.0f)); // Beschreibung der Option festlegen
@@ -199,18 +199,15 @@ cv::Mat OpticalFlowClgPyramidal::drawArrows(const cv::Mat& lastImage, const cv::
     //calculate the width and height for each scale
     for(int i = 1; i < nScales; i++)
     {
-        int newNx = (int)((double) nx[i-1] * scaleFactor + 0.5);
-        int newNy = (int)((double) ny[i-1] * scaleFactor + 0.5);
-        nx.push_back(newNx);
-        ny.push_back(newNy);
+        nx.push_back((int)((double) nx[i-1] * scaleFactor + 0.5));
+        ny.push_back((int)((double) ny[i-1] * scaleFactor + 0.5));
     }
 
     //initialize nu and nv
     for(int i = 0; i < nScales; i++)
     {
-        cv::Mat newUV = cv::Mat::zeros(ny[i],nx[i],CV_32F);
-        nu.push_back(newUV);
-        nv.push_back(newUV);
+        nu.push_back(cv::Mat::zeros(ny[i],nx[i],CV_32F));
+        nv.push_back(cv::Mat::zeros(ny[i],nx[i],CV_32F));
     }
 
     //create gauss filter for pre-smoothing
@@ -235,9 +232,8 @@ cv::Mat OpticalFlowClgPyramidal::drawArrows(const cv::Mat& lastImage, const cv::
 
     for(int i = 1; i < nScales; i++)
     {
-        cv::Mat newScale = cv::Mat::zeros(ny[i],nx[i],CV_32FC1);
-        pic1Scales.push_back(newScale);
-        pic2Scales.push_back(newScale);
+        pic1Scales.push_back(cv::Mat::zeros(ny[i],nx[i],CV_32FC1));
+        pic2Scales.push_back(cv::Mat::zeros(ny[i],nx[i],CV_32FC1));
         resize(pic1Scales[i-1],pic1Scales[i],cv::Size(nx[i],ny[i]),scaleFactor, scaleFactor, cv::INTER_CUBIC);
         resize(pic2Scales[i-1],pic2Scales[i],cv::Size(nx[i],ny[i]),scaleFactor, scaleFactor, cv::INTER_CUBIC);
     }
@@ -248,8 +244,8 @@ cv::Mat OpticalFlowClgPyramidal::drawArrows(const cv::Mat& lastImage, const cv::
     {
         //Mat image2Warped = Mat::zeros(ny[s], nx[s], CV_32FC1);
         std::vector<cv::Mat> resultCLG = CLG(pic1Scales[s],pic2Scales[s],iterations,alpha,w,rho, nu[s], nv[s]);
-        nu[s] = resultCLG[0];
-        nv[s] = resultCLG[1];
+        nu[s] = resultCLG[0].clone();
+        nv[s] = resultCLG[1].clone();
 
         if(s == 0) //this was the last scale
             break;

@@ -38,7 +38,8 @@ cv::Mat OpticalFlowCLG::drawArrows(const cv::Mat& lastImage, const cv::Mat& curr
     cv::cvtColor(currentImage,  pic2, CV_BGR2GRAY);
     currentImage.copyTo(pic3);
 
-    uOut = vOut = cv::Mat::zeros(pic3.rows, pic3.cols, CV_32F);
+    vOut = cv::Mat::zeros(pic3.rows, pic3.cols, CV_32F);
+    uOut = cv::Mat::zeros(pic3.rows, pic3.cols, CV_32F);
 
     int iterations = config.getValue("iterations");
     float alpha = config.getValue("alpha");
@@ -95,7 +96,6 @@ cv::Mat OpticalFlowCLG::drawArrows(const cv::Mat& lastImage, const cv::Mat& curr
     filter2D(fxft,fxft,-1,gaussianKernelY,cv::Point(0,(gaussianKernelY.rows+1)/2),0,cv::BORDER_REPLICATE);
     filter2D(fyft,fyft,-1,gaussianKernelX,cv::Point((gaussianKernelX.cols+1)/2,0),0,cv::BORDER_REPLICATE);
     filter2D(fyft,fyft,-1,gaussianKernelY,cv::Point(0,(gaussianKernelY.rows+1)/2),0,cv::BORDER_REPLICATE);
-
 
     for(int k = 0; k < iterations; k++)
     {

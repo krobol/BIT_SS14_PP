@@ -29,19 +29,17 @@ public slots:
     void changeLabel(int value)
     {
         char buffer[20];
-        if(m_precision > 0)
-            sprintf(buffer, "%.*f", m_precision, (float)value / (std::pow(10, m_precision)));
-        else
-            sprintf(buffer, "%.*f", m_precision, (float)value);
+        sprintf(buffer, "%.*f", m_precision, (float)value / (std::pow(10, m_precision)));
         m_label->setText(buffer);
     }
 
     void changeConfig(int value)
     {
-        if(m_precision > 0)
-            m_config->setValue(m_param, (float)value / (std::pow(10, m_precision)));
-        else
-            m_config->setValue(m_param, (float)value);
+        char buffer[20];
+        sprintf(buffer, "%.*f", m_precision, (float)value / (std::pow(10, m_precision)));
+        m_label->setText(buffer);
+
+        m_config->setValue(m_param, (float)value / (std::pow(10, m_precision)));
     }
 
 private:
@@ -55,9 +53,7 @@ class ConfigDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ConfigDialog(QWidget *parent = 0);
-
-    void changeAlgorithm(AlgorithmConfig* configDescription);
+    explicit ConfigDialog(QWidget *parent = 0, AlgorithmConfig* config = nullptr);
 
 private:
     QListWidget *contentsWidget;

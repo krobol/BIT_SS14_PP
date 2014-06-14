@@ -2,15 +2,8 @@
 
 #include <QtWidgets>
 
-
-
-ConfigDialog::ConfigDialog(QWidget *parent) :
+ConfigDialog::ConfigDialog(QWidget *parent, AlgorithmConfig* config) :
     QDialog(parent)
-{
-    setWindowTitle(tr("Config Dialog"));
-}
-
-void ConfigDialog::changeAlgorithm(AlgorithmConfig* config)
 {
     if(config != nullptr)
     {
@@ -23,7 +16,7 @@ void ConfigDialog::changeAlgorithm(AlgorithmConfig* config)
             MySlider *iterationsSlider = new MySlider(this);
             QLabel *iterationsCountLabel = new QLabel(tr(QString::number((*it).second->min).toStdString().c_str()));
 
-            iterationsSlider->setRange((*it).second->min*(std::pow(10, (*it).second->precision)), (*it).second->max*(std::pow(10, (*it).second->precision)));
+            iterationsSlider->setRange((*it).second->min * (std::pow(10, (*it).second->precision)), (*it).second->max*(std::pow(10, (*it).second->precision)));
             iterationsSlider->OnSliderCange(iterationsCountLabel, (*it).first, config);
 
             connect(iterationsSlider, SIGNAL(sliderMoved(int)), iterationsSlider, SLOT(changeLabel(int)));
@@ -31,7 +24,6 @@ void ConfigDialog::changeAlgorithm(AlgorithmConfig* config)
 
             iterationsSlider->setSliderDown(true);
             iterationsSlider->setTracking(true);
-
             iterationsSlider->setSliderPosition(config->getValue((*it).first) * (std::pow(10, (*it).second->precision)));
 
             QHBoxLayout *iterationsLayout = new QHBoxLayout;
@@ -49,4 +41,6 @@ void ConfigDialog::changeAlgorithm(AlgorithmConfig* config)
         mainLayout->addStretch(1);
         setLayout(mainLayout);
     }
+
+    setWindowTitle(tr("Config Dialog"));
 }
