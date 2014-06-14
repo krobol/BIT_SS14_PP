@@ -16,7 +16,7 @@ OpticalFlowClgPyramidal::OpticalFlowClgPyramidal()
     config.setValue("iterations", 1);   // Default wert einstellen
 
     config.addParameter("alpha", ConfigValueDescription("Global Smoothing", 2, 0.1f, 10.0f)); // Beschreibung der Option festlegen
-    config.setValue("alpha", 2.0f);
+    config.setValue("alpha", 10.0f);
 
     config.addParameter("rho", ConfigValueDescription("Local spatio-temporal smoothing", 2, 0, 2)); // Beschreibung der Option festlegen
     config.setValue("rho", 1.0f);
@@ -25,7 +25,7 @@ OpticalFlowClgPyramidal::OpticalFlowClgPyramidal()
     config.setValue("sigma", 3.0f);
 
     config.addParameter("w", ConfigValueDescription("SOR Relaxation", 2, 0, 2)); // Beschreibung der Option festlegen
-    config.setValue("w", 0.2f);
+    config.setValue("w", 1.0f);
 
     config.addParameter("nScales", ConfigValueDescription("Number of Scales", 0, 1, 6)); // Beschreibung der Option festlegen
     config.setValue("nScales", 4.0f);
@@ -36,7 +36,7 @@ OpticalFlowClgPyramidal::OpticalFlowClgPyramidal()
 
 char* OpticalFlowClgPyramidal::getName()
 {
-    return "Combined Local Global Pyramidal";
+    return "Combined Local Global Multiresolution";
 }
 
 std::vector<cv::Mat> CLG(cv::Mat pic1, cv::Mat pic2, int iterations, float alpha, float w, float sigma, cv::Mat uOut, cv::Mat vOut)
@@ -237,8 +237,6 @@ cv::Mat OpticalFlowClgPyramidal::drawArrows(const cv::Mat& lastImage, const cv::
         resize(pic1Scales[i-1],pic1Scales[i],cv::Size(nx[i],ny[i]),scaleFactor, scaleFactor, cv::INTER_CUBIC);
         resize(pic2Scales[i-1],pic2Scales[i],cv::Size(nx[i],ny[i]),scaleFactor, scaleFactor, cv::INTER_CUBIC);
     }
-
-
 
     for(int s = nScales-1; s>=0; s--)
     {

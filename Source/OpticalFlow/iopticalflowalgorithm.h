@@ -27,7 +27,7 @@ public:
     // name of Algorithm for GUI
     virtual char* getName() = 0;
 
-    // actual algorithm
+    // Diese Funktion zeichnet die Pfeile auf das eingegebene Bild
     virtual cv::Mat drawArrows(const cv::Mat& lastImage, const cv::Mat& currentImage) = 0;
 
     // Config Struct

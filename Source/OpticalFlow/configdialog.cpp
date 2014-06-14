@@ -3,7 +3,8 @@
 #include <QtWidgets>
 
 ConfigDialog::ConfigDialog(QWidget *parent, AlgorithmConfig* config) :
-    QDialog(parent)
+    QDialog(parent),
+    contentsWidget(nullptr)
 {
     if(config != nullptr)
     {

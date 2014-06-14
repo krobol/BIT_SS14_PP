@@ -23,6 +23,9 @@ QT_END_NAMESPACE
 class PlayerControls;
 class ConfigDialog;
 
+// Das Mainwindow enhält das Interface und verwaltet
+// eine Liste der Algorithmen die für die Dartstellung
+// des Optischen Flusses zur verfügung stehen.
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -30,6 +33,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
     void addAlgorithm(OpticalFlowAlgorithmPtr algo);
 
 public slots:
@@ -46,16 +50,19 @@ public slots:
     void algorithmChanged(const QString& text);
 
 private:
-    void LoadSequence(QString fileName);
     void resizeEvent(QResizeEvent *event);
+    void LoadSequence(QString fileName);
     void setAlgorithm(const QString& text);
 
     void createActions();
     void createMenus();
 
+    // Passt das Bild an die größe des Interface an
     void adjustImage();
 
+    // Berechnet das nächste Bild mit Optical Flow Pfeilen
     void nextImage();
+    // Berechnet das vorheriges Bild mit Optical Flow Pfeilen
     void previousImage();
 
     QAction *openAct;
@@ -90,10 +97,10 @@ private:
     cv::VideoCapture m_sequence;
     cv::Mat m_current_image;
     double current_frame_number;
+    float fps;
 
     std::map<std::string, OpticalFlowAlgorithmPtr> AlgorithmMap;
     OpticalFlowAlgorithmPtr m_currentAlgorithm;
-    float fps;
 };
 
 #endif // MAINWINDOW_H

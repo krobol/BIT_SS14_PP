@@ -9,6 +9,7 @@ class QAbstractSlider;
 class QComboBox;
 QT_END_NAMESPACE
 
+// Playersteuerung für die Sequenz
 class PlayerControls : public QWidget
 {
     Q_OBJECT

@@ -12,17 +12,17 @@
 OpticalFlowCLG::OpticalFlowCLG()
 {
     // Define Options
-    config.addParameter("iterations", ConfigValueDescription("Iterations", 0, 0, 10)); // Beschreibung der Option festlegen
+    config.addParameter("iterations", ConfigValueDescription("Iterations", 0, 1, 10)); // Beschreibung der Option festlegen
     config.setValue("iterations", 1);   // Default wert einstellen
 
     config.addParameter("alpha", ConfigValueDescription("Global Smoothing", 2, 0.1f, 10.0f)); // Beschreibung der Option festlegen
-    config.setValue("alpha", 2.0f);
+    config.setValue("alpha", 10.0f);
 
     config.addParameter("sigma", ConfigValueDescription("Local spatio-temporal smoothing", 2, 0, 2)); // Beschreibung der Option festlegen
-    config.setValue("sigma", 1.0f);
+    config.setValue("sigma", 2.0f);
 
     config.addParameter("w", ConfigValueDescription("SOR Relaxation", 2, 0, 2)); // Beschreibung der Option festlegen
-    config.setValue("w", 0.2f);
+    config.setValue("w", 2.0f);
 }
 
 char* OpticalFlowCLG::getName()

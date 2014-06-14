@@ -12,11 +12,11 @@
 OpticalFlowHornSchunck::OpticalFlowHornSchunck()
 {
     // Define Options
-    config.addParameter("Iterations", ConfigValueDescription("Iteraasftions", 0, 0, 10)); // Beschreibung der Option festlegen
-    config.setValue("Iterations", 2);   // Default wert einstellen
+    config.addParameter("Iterations", ConfigValueDescription("Iterations", 0, 1, 10)); // Beschreibung der Option festlegen
+    config.setValue("Iterations", 1);   // Default wert einstellen
 
-    config.addParameter("Alpha", ConfigValueDescription("Alsdafpha", 2, 0, 10)); // Beschreibung der Option festlegen
-    config.setValue("Alpha", 5.0f);
+    config.addParameter("Alpha", ConfigValueDescription("Smoothness", 2, 0, 10)); // Beschreibung der Option festlegen
+    config.setValue("Alpha", 10.0f);
 }
 
 char* OpticalFlowHornSchunck::getName()

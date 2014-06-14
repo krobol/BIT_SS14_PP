@@ -9,11 +9,17 @@
 #include <iostream>
 #include <functional>
 
+// Angepasster Slider der die Optionen des Algorithmus ändert
 class MySlider : public QSlider
 {
     Q_OBJECT
 public:
-    MySlider ( QWidget * parent = 0 ) : QSlider(Qt::Horizontal, parent)
+    MySlider ( QWidget * parent = 0 ) :
+        QSlider(Qt::Horizontal, parent),
+        m_precision(),
+        m_label(nullptr),
+        m_param(""),
+        m_config(nullptr)
     {
     }
 
@@ -49,6 +55,7 @@ private:
     AlgorithmConfig *m_config;
 };
 
+// Optionsmenü
 class ConfigDialog : public QDialog
 {
     Q_OBJECT

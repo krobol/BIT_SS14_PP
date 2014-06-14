@@ -12,7 +12,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
 
-    // Adding Algorithm
+    // Hier werden die Optical Flow Algorithmen zum Interface hinzugefügt.
+    // Jeder der Algorithmen erbt vom IOpticalFlowAlgorithm Interface und
+    // implementiert eine Funktion, die die Pfeile auf das Bild zeichnet, weshalb
+    // alle Algoithmen als Plugin ins Programm geladen werden können.
     w.addAlgorithm(OpticalFlowAlgorithmPtr(new OpticalFlowHornSchunck()));
     w.addAlgorithm(OpticalFlowAlgorithmPtr(new OpticalFlowCLG()));
     w.addAlgorithm(OpticalFlowAlgorithmPtr(new OpticalFlowClgPyramidal()));

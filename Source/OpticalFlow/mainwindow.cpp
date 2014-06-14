@@ -29,8 +29,8 @@ cv::Mat QImage2Mat(QImage const& src)
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     current_frame_number(0),
-    m_currentAlgorithm(nullptr),
     fps(1),
+    m_currentAlgorithm(nullptr),
     openAct(nullptr),
     exitAct(nullptr),
     fileMenu(nullptr),

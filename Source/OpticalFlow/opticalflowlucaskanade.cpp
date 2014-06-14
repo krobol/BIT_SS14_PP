@@ -12,8 +12,8 @@
 OpticalFlowLucasKanade::OpticalFlowLucasKanade()
 {
     // Define Options
-    config.addParameter("quadOptWinSize", ConfigValueDescription("quadOptWinSize", 0, 1, 40)); // Beschreibung der Option festlegen
-    config.setValue("quadOptWinSize", 20); // Optionswert lesen
+    config.addParameter("quadOptWinSize", ConfigValueDescription("Kernelsize", 0, 1, 40)); // Beschreibung der Option festlegen
+    config.setValue("quadOptWinSize", 10); // Optionswert lesen
 }
 
 char* OpticalFlowLucasKanade::getName()
